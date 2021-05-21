@@ -31,7 +31,9 @@ _ _ _
 2. DAO(Data Access Object)
 3. 이런 생각을 했다([참고](https://not-to-be-reset.tistory.com/167)).  
 ```txt
-역할이라는 관점에서 UserDao는 하나의 역할을 수행하는 클래스로도 볼 수 있지만 하나의 역할(CRUD)을 수행하기 위해 커넥션 생성, 리소스 반납 등 여러 책임을 지고 있다. 즉 SRP, 단일 책임 원칙을 위배한다고 볼 수 있다.
+역할이라는 관점에서 UserDao는 하나의 역할을 수행하는 클래스로도 볼 수 있지만
+하나의 역할(CRUD)을 수행하기 위해 커넥션 생성, 리소스 반납 등 여러 책임을 지고 있다.
+즉 SRP, 단일 책임 원칙을 위배한다고 볼 수 있다.
 ```
 
 ##### [목차로 이동](#목차)
@@ -53,9 +55,9 @@ _ _ _
 2. 상속을 통한 확장[4]  
 	```java
 	public abstract class UserDao {
-		// DB 기능이 아닌 DB 종류에도 독립적인 코드가 되었다(이제 UserDao의 소스 코드를 직접 제공하지 않아도 된다).
+	    // DB 기능이 아닌 DB 종류에도 독립적인 코드가 되었다(이제 UserDao의 소스 코드를 직접 제공하지 않아도 된다).
 		
-		// 구현 코드는 제거되고 추상 메소드로 바뀌었고 메소드의 구현은 서브 클래스가 담당한다.
+	    // 구현 코드는 제거되고 추상 메소드로 바뀌었고 메소드의 구현은 서브 클래스가 담당한다.
 	    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 	}
 	```
