@@ -182,7 +182,7 @@ DaoFactory에 대응되는 것이 스프링의 애플리케이션 컨텍스트�
 1. [What is the difference between == and equals() in Java?](https://stackoverflow.com/questions/7520432/what-is-the-difference-between-and-equals-in-java)
 2. 서버 환경에서는 그 특성상 싱글톤의 사용이 권장된다.
 3. 스프링의 싱글톤 빈으로 사용되는 클래스를 만들 때는 기존의 UserDao처럼 개별적으로 바뀌는 정보, 즉 읽기 전용을 제외한 변수는 로컬 변수로 정의하거나, 파라미터로 주고받으면서 사용하게 해야 한다.
-4. 따라서 싱글톤은 기본적으로 상태유지(stateful) 방식으로 만들어지지 않는다.
+4. 따라서 싱글톤은 기본적으로 상태유지(stateful) 방식으로 만들어지지 않는다. [뭔가 함수형이 생각나네?](https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript)
 5. [Quick Guide to Spring Bean Scopes](https://www.baeldung.com/spring-bean-scopes)
 6. [우아한Tech_크로플의 싱글턴과 정적클래스](https://www.youtube.com/watch?v=C6CczyrkYXU)
 
