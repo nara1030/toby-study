@@ -116,11 +116,22 @@ public class UserDaoTest {
 
 이를 팩토리 역할의 클래스를 만들어 분리한 클래스 다이어그램은 아래와 같다.
 
-<img src="../img/v1_ch1_04.png" width="500" height="200"></br>
+<img src="../img/v1_ch1_04.png" width="600" height="250"></br>
+
+이와 같이 DaoFactory를 분리해보았다. 이로 인해 달라진 점은 컴포넌트 객체를 생성하고 관계를 설정해주는 주체가 달라졌다는 점이다[1]. 즉 기존 프로그램에서는 
 
 
 - - -
-1. 
+1. DaoFactory 클래스의 코드는 다음과 같다.  
+```java
+public class DaoFactory {
+    public UserDao userDao() {
+        ConnectionMaker connectionMaker = new DConnectionMaker();
+        UserDao userDao = new UserDao(connectionMaker);
+        return userDao;
+    }
+}
+```
 
 ##### [목차로 이동](#목차)
 
