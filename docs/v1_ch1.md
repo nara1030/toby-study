@@ -83,14 +83,44 @@ _ _ _
 ##### [목차로 이동](#목차)
 
 ### DAO의 확장
+이번에는 DB 커넥션과 관련된 부분을 서브 클래스가 아니라 아예 별도의 클래스에 담는다. 앞서 확장의 방법으로 두 가지를 언급했는데, 합성[1]을 이용한다. 클래스 다이어그램을 보면 다음과 같다[2].
 
+<img src="../img/v1_ch1_02.png" width="500" height="200"></br>
 
+이제 UserDao는 적합한 알고리즘을 선택하는 책임에서 자유롭다[3]. 이를 위해 UserDao, 즉 context 클래스에 전략에 대한 참조를 저장하는 필드가 존재한다. 스프링의 DI도 이와 마찬가지 구조를 가진다.
+
+- - -
+1. 전략 패턴(Strategy Pattern)
+2. 출처: [Strategy](https://refactoring.guru/design-patterns/strategy)
+3. 상속을 통해 확장했을 때를 떠올려보면, UserDao와 NUserDao 등 그의 자식 클래스의 강결합이 단점[4]이었다. 하지만 합성을 이용한 경우 UserDao는 런타임 시에 관계가 형성되는 느슨한 연결을 취하고 있다.
+4. [Difference between inheritance and composition in Java](https://www.tutorialspoint.com/difference-between-inheritance-and-composition-in-java)
 
 ##### [목차로 이동](#목차)
 
 ### 제어의 역전
+지금까지의 코드를 클래스 다이어그램으로 확인해보자.
+
+<img src="../img/v1_ch1_03.png" width="400" height="150"></br>
+
+문제는 클라이언트인 UserDaoTest 클래스가 기존 외에 또 다른 책임을 맡게 되었다는 점이다.
+
+```java
+public class UserDaoTest {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        ConnectionMaker connectionMaker = new DConnectionMaker();
+        UserDao dao = new UserDao(connectionMaker);
+        // ...
+    }
+}
+```
+
+이를 팩토리 역할의 클래스를 만들어 분리한 클래스 다이어그램은 아래와 같다.
+
+<img src="../img/v1_ch1_04.png" width="400" height="150"></br>
 
 
+- - -
+1. 
 
 ##### [목차로 이동](#목차)
 
