@@ -149,7 +149,9 @@ public class DaoFactory {
 빈을 검색하는 다양한 방법이 있다고 했는데, getBean()은 기본적으로 Object 타입으로 리턴하게 되어 있어서 다시 캐스팅을 해주어야 하는 부담이 있다. 다만 자바 5 이상의 제네릭 메소드 방식을 사용해 두 번째 파라미터에 타입을 주면, 지저분한 캐스팅 코드를 사용하지 않아도 된다[4].
 
 - - -
-1. [Difference Between BeanFactory and ApplicationContext](https://www.baeldung.com/spring-beanfactory-vs-applicationcontext)
+1. BeanFactory vs. ApplicationContext
+	* [Difference Between BeanFactory and ApplicationContext](https://www.baeldung.com/spring-beanfactory-vs-applicationcontext)
+	* [ApplicationContext와 BeanFactory](http://wonwoo.ml/index.php/post/1571)
 2. 여기서 별도의 정보를 참고하는 방법엔 자바, XML 등 몇 가지가 있다.
 3. 스프링에서 이 애플리케이션 컨텍스트를 IoC 컨테이너, 스프링 컨테이너 혹은 빈 팩토리라고 부르기도 한다.
 4. getBean에 관한 API는 아래와 같다.  
@@ -163,8 +165,13 @@ public interface BeanFactory {
 ##### [목차로 이동](#목차)
 
 ### 싱글톤 레지스트리와 오브젝트 스코프
+DaoFactory에 대응되는 것이 스프링의 애플리케이션 컨텍스트임을 알았고, 실행 결과가 같음을 확인했다. 하지만 이 두 방법에는 중요한 차이가 있다. 바로 DaoFactory의 경우는 호출할 때마다 새로운 오브젝트를 반환하지만 스프링 컨테이너의 getBean()는 동일한 오브젝트를 반환한다[1].
 
+그렇다면 후자의 경우 동일한 오브젝트를 반환하는 이유는 무엇일까? 
 
+- - -
+1. [What is the difference between == and equals() in Java?](https://stackoverflow.com/questions/7520432/what-is-the-difference-between-and-equals-in-java)
+2. .
 
 ##### [목차로 이동](#목차)
 
