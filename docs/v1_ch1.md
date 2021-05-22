@@ -100,7 +100,7 @@ _ _ _
 ### 제어의 역전
 지금까지의 코드를 클래스 다이어그램으로 확인해보자.
 
-<img src="../img/v1_ch1_03.png" width="400" height="150"></br>
+<img src="../img/v1_ch1_03.png" width="500" height="200"></br>
 
 문제는 클라이언트인 UserDaoTest 클래스가 기존 외에 또 다른 책임을 맡게 되었다는 점이다.
 
@@ -116,7 +116,7 @@ public class UserDaoTest {
 
 이를 팩토리 역할의 클래스를 만들어 분리한 클래스 다이어그램은 아래와 같다.
 
-<img src="../img/v1_ch1_04.png" width="400" height="150"></br>
+<img src="../img/v1_ch1_04.png" width="500" height="200"></br>
 
 
 - - -
