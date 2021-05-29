@@ -1,9 +1,11 @@
-package v1_ch01.vr3_composition.dao;
+package v2_ch02.dao;
 
-import v1_ch01.util.conn.Connection;
-import v1_ch01.util.db.CustomDb;
+import v1_ch01.util.exception.FailToConnectDbException;
+import v1_ch01.util.exception.FailToGetUserByIdException;
 import v1_ch01.util.vo.User;
-import v1_ch01.vr3_composition.conn_maker.ConnectionMaker;
+import v2_ch02.conn.Connection;
+import v2_ch02.conn_maker.ConnectionMaker;
+import v2_ch02.db.CustomDb;
 
 public class UserDao {
 	private ConnectionMaker connectionMaker;
@@ -21,7 +23,7 @@ public class UserDao {
 		db.insert(conn, user);
 	}
 	
-	public User get(String id) {
+	public User get(String id) throws FailToConnectDbException, FailToGetUserByIdException {
 		// 1. 커넥션 획득
 		Connection conn = connectionMaker.openConnection();
 

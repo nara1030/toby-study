@@ -1,13 +1,13 @@
-package v1_ch01.util.db;
+package v2_ch02.db;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import v1_ch01.util.conn.Connection;
 import v1_ch01.util.exception.FailToConnectDbException;
 import v1_ch01.util.exception.FailToGetUserByIdException;
 import v1_ch01.util.vo.User;
+import v2_ch02.conn.Connection;
 
 public class CustomDb {
 	private static Map<String, User> users = new HashMap<String, User>();
@@ -26,19 +26,15 @@ public class CustomDb {
 		users.put(user.getId(), user);
 	}
 
-	public User get(Connection conn, String id) {
-		try {
-			if (conn == null) {
+	public User get(Connection conn, String id) throws FailToConnectDbException, FailToGetUserByIdException {
+		if (conn == null) {
 //			System.out.println("DB 연결 에러로 인한 조회 실패");
 //			return null;
-				throw new FailToConnectDbException("DB 연결 에러로 인한 조회 실패");
-			}
+			throw new FailToConnectDbException("DB 연결 에러로 인한 조회 실패");
+		}
 
-			if (Objects.isNull(users.get(id))) {
-				throw new FailToGetUserByIdException("해당 Id 사용자 없음");
-			}
-		} catch (FailToConnectDbException e1) {
-		} catch (FailToGetUserByIdException e2) {
+		if (Objects.isNull(users.get(id))) {
+			throw new FailToGetUserByIdException("해당 Id 사용자 없음");
 		}
 
 		return users.get(id);

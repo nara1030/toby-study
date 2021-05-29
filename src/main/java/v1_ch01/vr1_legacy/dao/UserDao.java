@@ -3,6 +3,7 @@ package v1_ch01.vr1_legacy.dao;
 import v1_ch01.util.conn.Connection;
 import v1_ch01.util.conn.DConnection;
 import v1_ch01.util.db.CustomDb;
+import v1_ch01.util.exception.FailToGetUserByIdException;
 import v1_ch01.util.vo.User;
 
 public class UserDao {
