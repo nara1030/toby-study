@@ -33,8 +33,15 @@
 앞서 언급한 두 가지 문제점을 개선해보자. 첫째, 수동 확인 작업의 번거로움이다. 기존 테스트 코드를 살펴보자.
 
 ```java
+// 1. 등록
+dao.add(user);
+System.out.println(user.getId() + " 등록 성공");
 
+// 2. 조회
+System.out.println(dao.get(user.getId()).getId() + " 조회 성공");
 ```
+
+
 
 ##### [목차로 이동](#목차)
 
