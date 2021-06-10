@@ -81,6 +81,9 @@
   - https://www.tutorialspoint.com/difference-between-dispatcherservlet-and-contextloaderlistener-in-spring
   - https://www.baeldung.com/spring-web-contexts
   - https://pangtrue.tistory.com/136
+6. 세션 공유(feat. 인터셉터)
+  - http://dveamer.github.io/backend/SpringRequestContextHolder.html
+  - https://www.baeldung.com/spring-mvc-custom-handler-interceptor
 
 ```
 
