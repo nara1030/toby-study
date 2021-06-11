@@ -62,10 +62,26 @@
 		1. 수강 과목 매칭 시 현재 수강 인원 조회
 		2. 특정 과목 최고점 획득 학생 조회(?)
 
-처음에 학사관리 프로그램이라고 해서, 수강과 성적부여 두 기능이 필요하다고 생각했다. 즉, 각 학생이냐, 교수냐, 관리자냐에 따라 접근할 수 있는 기능이 다르므로 구현하고자 하는 기능 외[1] 다른 기능이 훨씬 더 많이 포함되어 있다고 느꼈다. 그런데 요구사항을 다시 보니 학생(혹은 관리자)의 관점에서만 생각한 학사 관리 프로그램인 것 같다. 학생이 본인 점수를 부여하나 싶어 좀 애매하긴 한 것 같은데. 어쨌든 내가 생각한 부분은 지금까지 했던 부분 외의 구현이 많은데 그걸 차치하고 테스트를 구현하려니 손이 안 간다는 문제가 있었다. 무언가 구현 순서가 잘못되지 않았나.. 아무튼 구현하면서 찾아본 것들을 아래 남긴다.
+처음에 학사관리 프로그램이라고 해서, 수강과 성적부여 두 기능이 필요하다고 생각했다. 즉, 각 학생이냐, 교수냐, 관리자냐에 따라 접근할 수 있는 기능이 다르므로 구현하고자 하는 기능 외[1] 다른 기능이 훨씬 더 많이 포함되어 있다고 느꼈다. 그런데 요구사항을 다시 보니 학생(혹은 관리자)의 관점에서만 생각한 학사 관리 프로그램인 것 같다. 학생이 본인 점수를 부여하나 싶어 좀 애매하긴 한 것 같은데. 어쨌든 내가 생각한 부분은 지금까지 했던 부분 외의 구현이 많은데 그걸 차치하고 테스트를 구현하려니 손이 안 간다는 문제가 있었다. 무언가 구현 순서가 잘못되지 않았나.. 아무튼 구현 소스 및 테스트 결과[2], 찾아본 것들을 아래 남긴다.
 
 - - -
 1. 토비의 스프링 1장은 상속보다는 구현, 즉 전략 패턴으로 알려진 디자인 패턴으로 코드를 리팩토링해가며 스프링의 원리인 DI, IoC를 소개한다. 사실 1장을 신경쓰지 않고 구현했지만 결국 스프링 컨테이너를 썼기에 자연스레 DI, IoC가 적용된 코드이긴 하다.
+2. 엔드 포인트
+```txt
+GET http://localhost:8081/academy/login
+GET http://localhost:8081/academy/login?userId=stu1&userPassword=stu1
+GET http://localhost:8081/academy/users
+GET http://localhost:8081/academy/users/stu1
+GET http://localhost:8081/academy/students/pro1
+GET http://localhost:8081/academy/students/stu1
+POST http://localhost:8081/academy/users
+  {
+    "userId" : "stu2",
+    "userPassword" : "stu2",
+    "userNm" : "학생2",
+    "userGroupCd" : "02"
+  }
+```
 
 - - -
 ```txt
@@ -108,7 +124,7 @@
       - GET http://localhost:8081/academy/login?userId=stu1&userPassword=stu1 302
         GET http://localhost:8081/academy/users/stu1                          200
   4-C. @Pathvariable 사용 시 로그인 사용자가 해당 경로에 권한이 없을 경우, 즉 본인 조회만 가능한 경우
-    - Ideal
+    - Ugly
       @GetMapping(value = "/{userId}")
       public Student findOneById(@PathVariable("userId") String studentId
               , @SessionAttribute("user") User user) {
@@ -119,14 +135,22 @@
 		
           return studentDaoService.findOne(student);
       }
-    - Ugly
+    - Ideal
       @GetMapping(value = "/{userId}")
       public Student findOneById(@PathVariable("userId") String studentId) {
           Student student = new Student(studentId, null, null, null);
 		
           return studentDaoService.findOne(student);
       }
-5. 기타
+5. 에러
+  5-A. 컨트롤러 메소드 관련 @RequestBody 파라미터 이슈
+    - 6월 12, 2021 1:53:23 오전 org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver handleHttpMessageNotReadable
+      경고: Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: No suitable constructor found for type [simple type, class academy.user.User]: can not instantiate from JSON object (missing default constructor or creator, or perhaps need to add/enable type information?)
+      at [Source: java.io.PushbackInputStream@4094ea3a; line: 2, column: 5]; nested exception is com.fasterxml.jackson.databind.JsonMappingException: No suitable constructor found for type [simple type, class academy.user.User]: can not instantiate from JSON object (missing default constructor or creator, or perhaps need to add/enable type information?)
+      at [Source: java.io.PushbackInputStream@4094ea3a; line: 2, column: 5]
+    - https://stackoverflow.com/questions/7625783/jsonmappingexception-no-suitable-constructor-found-for-type-simple-type-class
+  5-B.
+6. 기타
   - https://eastglow.github.io/back-end/2018/11/05/Spring-Interceptor%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%84%B8%EC%85%98-%EB%B0%8F-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC-%ED%95%98%EA%B8%B0.html
   - https://gangnam-americano.tistory.com/11
 ```
