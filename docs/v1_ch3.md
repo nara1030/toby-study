@@ -48,43 +48,87 @@
 ### 과제
 토비 스프링 1장 내용을 참고해, [간단한 학사관리 프로그램](https://www.notion.so/1-facd22e7b04140ab81dcfc8405428fe3)을 만들어보자. 요구사항은 아래와 같다.
 
-* 
-*
+* ERD: 학생 (1-多) 학생수강과목내역 (1-多) 과목
+* 기능
+	* 생성
+		1. 학생 생성
+		2. 과목 생성
+		3. 수강 과목 매칭
+	* 조회
+		1. 특정 학생 정보 조회
+		2. 전체 과목 정보 조회
+		3. 특정 학생의 수강 과목 학점 조회
+	* 알파
+		1. 수강 과목 매칭 시 현재 수강 인원 조회
+		2. 특정 과목 최고점 획득 학생 조회(?)
+
+처음에 학사관리 프로그램이라고 해서, 수강과 성적부여 두 기능이 필요하다고 생각했다. 즉, 각 학생이냐, 교수냐, 관리자냐에 따라 접근할 수 있는 기능이 다르므로 구현하고자 하는 기능 외[1] 다른 기능이 훨씬 더 많이 포함되어 있다고 느꼈다. 그런데 요구사항을 다시 보니 학생(혹은 관리자)의 관점에서만 생각한 학사 관리 프로그램인 것 같다. 학생이 본인 점수를 부여하나 싶어 좀 애매하긴 한 것 같은데. 어쨌든 내가 생각한 부분은 지금까지 했던 부분 외의 구현이 많은데 그걸 차치하고 테스트를 구현하려니 손이 안 간다는 문제가 있었다. 무언가 구현 순서가 잘못되지 않았나.. 아무튼 구현하면서 찾아본 것들을 아래 남긴다.
+
+- - -
+1. 토비의 스프링 1장은 상속보다는 구현, 즉 전략 패턴으로 알려진 디자인 패턴으로 코드를 리팩토링해가며 스프링의 원리인 DI, IoC를 소개한다. 사실 1장을 신경쓰지 않고 구현했지만 결국 스프링 컨테이너를 썼기에 자연스레 DI, IoC가 적용된 코드이긴 하다.
 
 - - -
 ```txt
-1. xml 경로 설정 이슈
-  - ex. http://localhost:8081/academy/users
-  - 위 경로로 정보를 불러오고자 할 때 프론트 컨트롤러의 URL을 설정해주어야 한다.
-    즉 web.xml 및 하위(?)의 dispatcher-servlet.xml에 경로를 설정해주어야 한다.
-    내 경우 위 경로로 요청을 보냈는데 인터셉터를 안 타는 문제가 있었는데, 각 설정은 아래와 같았다.
-  - web.xml
-    <servlet-mapping>
-        <servlet-name>dispatcherServlet</servlet-name>
-        <url-pattern>/academy/*</url-pattern>
-    </servlet-mapping>
-    dispatcher-servlet.xml
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/academy/*"/>
-            <ref bean="loginInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-  - 인터셉터의 경로를 /academy/* 에서 /*로 바꿔주자 해결되었다.
-2. getParameter vs. getAttribute
-3. 인터셉터가 여러 개라면, 순서는?
-  - https://sjh836.tistory.com/163
-4. 인터셉터 vs. 필터
-  - https://datamod.tistory.com/128
-5. ContextLoaderListener vs. DispatcherServlet
-  - https://howtodoinjava.com/spring-mvc/contextloaderlistener-vs-dispatcherservlet/
-  - https://www.tutorialspoint.com/difference-between-dispatcherservlet-and-contextloaderlistener-in-spring
-  - https://www.baeldung.com/spring-web-contexts
-  - https://pangtrue.tistory.com/136
-6. 세션 공유(feat. 인터셉터)
-  - http://dveamer.github.io/backend/SpringRequestContextHolder.html
-  - https://www.baeldung.com/spring-mvc-custom-handler-interceptor
-
+1. XML 설정
+  1-A. 각 XML 파일 위치 및 역할 파악 필요
+    - web.xml
+    - dispatcher-servlet.xml
+    - ...
+  1-B. 경로
+    - 스프링 MVC 설정에서 PATH를 줄 때는 기본적으로 웹 애플리케이션의 경로와 DispatcherServlet의 매핑 경로를 빼야 함
+      즉, 인터셉터 경로 역시 이를 뺀 뒷 부분을 설정해야 함
+    - https://groups.google.com/g/ksug/c/hstj7qgDfFM
+  1-C. 스프링 웹 컨텍스트
+    - https://www.baeldung.com/spring-web-contexts
+    - https://howtodoinjava.com/spring-mvc/contextloaderlistener-vs-dispatcherservlet/
+    - https://pangtrue.tistory.com/136
+2. 인터셉터 vs. 필터
+  2-A. 인터셉터
+    - https://datamod.tistory.com/128
+    - https://sjh836.tistory.com/163
+  2-B. 필터
+    -
+3. 로그인과 세션
+  3-A. POST 혹은 GET
+    - https://lng1982.tistory.com/194
+    - https://meetup.toast.com/posts/44
+  3-B. 인터셉터, 세션 체크 혹은 공유(인터셉터, 컨트롤러 등)
+    - https://stackoverflow.com/questions/18791645/how-to-use-session-attributes-in-spring-mvc
+    - https://www.baeldung.com/spring-mvc-session-attributes
+    - https://www.baeldung.com/spring-mvc-custom-handler-interceptor
+    - http://dveamer.github.io/backend/SpringRequestContextHolder.html
+4. REST
+  4-A. RestController에서 Redirect 필요한 경우
+    - https://stackoverflow.com/questions/29085295/spring-mvc-restcontroller-and-redirect
+  4-B. Redirect 루트 경로 이슈
+    - 변경 전: response.sendRedirect("/users/" + user.getUserId());
+      - GET http://localhost:8081/academy/login?userId=stu1&userPassword=stu1 302
+        GET http://localhost:8081/users/stu1                                  404
+    - 변경 후: response.sendRedirect("users/" + user.getUserId());
+      - GET http://localhost:8081/academy/login?userId=stu1&userPassword=stu1 302
+        GET http://localhost:8081/academy/users/stu1                          200
+  4-C. @Pathvariable 사용 시 로그인 사용자가 해당 경로에 권한이 없을 경우, 즉 본인 조회만 가능한 경우
+    - Ideal
+      @GetMapping(value = "/{userId}")
+      public Student findOneById(@PathVariable("userId") String studentId
+              , @SessionAttribute("user") User user) {
+          // studentId와 currentUserId 비교 로직
+          log.debug("studentId is {}", studentId);
+          log.debug("currentUserId is {}", user.getUserId());
+          Student student = new Student(studentId, null, null, null);
+		
+          return studentDaoService.findOne(student);
+      }
+    - Ugly
+      @GetMapping(value = "/{userId}")
+      public Student findOneById(@PathVariable("userId") String studentId) {
+          Student student = new Student(studentId, null, null, null);
+		
+          return studentDaoService.findOne(student);
+      }
+5. 기타
+  - https://eastglow.github.io/back-end/2018/11/05/Spring-Interceptor%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%84%B8%EC%85%98-%EB%B0%8F-%EA%B6%8C%ED%95%9C-%EC%B2%B4%ED%81%AC-%ED%95%98%EA%B8%B0.html
+  - https://gangnam-americano.tistory.com/11
 ```
 
 ##### [목차로 이동](#목차)
