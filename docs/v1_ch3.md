@@ -9,6 +9,14 @@
 6. [스프링의 JDBCTEMPLATE](#스프링의-JDBCTEMPLATE)
 7. [과제](#과제)
 
+1장에서 초난감 DAO를 전략 패턴, 즉 DI를 적용하여 확장과 변경에 용이한 구조[1]로 리팩토링해보았다. 즉 우리는 UserDao 클래스의 메소드간 중복된 부분을 메소드로 추출하고, 변하는 부분[2]은 타 클래스로 분리[3]하여 주입하는 방식으로 개선했다. 여기서 중복된 부분을 메소드로 추출한 코드, 즉 변치 않는 부분을 템플릿[4]이라 하는데, 이 장에서는 UserDao에 아직 미비된 예외 처리 기능을 적용하며 템플릿에 대해 알아보고 스프링에 적용된 템플릿 기법을 알아본다.
+
+- - -
+1. [개방-폐쇄 원칙](https://johngrib.github.io/wiki/SOLID/)(OCP)
+2. 또는 성격이 다른 부분이라고 볼 수도 있다.
+3. 클래스 분리가 아니어도 DI로 볼 수 있다(p224).
+4. 1장에서 소개한 [템플릿 메소드](https://johngrib.github.io/wiki/template-method-pattern/)의 템플릿도 같은 맥락이다.
+
 ### 다시 보는 초난감 DAO
 
 
@@ -34,7 +42,16 @@
 ##### [목차로 이동](#목차)
 
 ### 템플릿과 콜백
-
+* Template Callback Pattern
+	* https://multifrontgarden.tistory.com/101
+	* https://multifrontgarden.tistory.com/124
+	* http://tutorials.jenkov.com/java/lambda-expressions.html
+* Java 예외 처리
+	* https://johngrib.github.io/wiki/java-exception-handling/
+	* https://sabarada.tistory.com/78
+	* https://multifrontgarden.tistory.com/192
+* Generics
+	* .
 
 
 ##### [목차로 이동](#목차)
